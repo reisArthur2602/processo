@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Acesso à plataforma Processo">
+  <title>Entrar — Processo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="tailwind.config.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    ::selection { background:#DCE8F0; color:#0B1F33; }
+    @media (prefers-reduced-motion: reduce) { *,*::before,*::after { transition-duration:.01ms!important; animation-duration:.01ms!important; } }
+  </style>
+</head>
+<body class="min-h-screen bg-mist font-sans text-ink antialiased">
+  <main class="grid min-h-screen lg:grid-cols-[.9fr_1.1fr]">
+    <section class="relative hidden overflow-hidden bg-ink p-12 text-white lg:flex lg:flex-col lg:justify-between xl:p-16" aria-label="Apresentação da plataforma">
+      <div class="absolute inset-y-0 left-0 w-2 bg-docket"></div>
+      <div class="absolute -right-32 -top-32 h-96 w-96 rounded-full border border-white/10"></div>
+      <div class="absolute -right-16 top-10 h-72 w-72 rounded-full border border-white/10"></div>
+      <a href="design-system.html" class="relative z-10 flex w-fit items-center gap-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-ink">
+        <span class="grid h-11 w-11 place-items-center rounded-xl bg-white text-ink shadow-lift" aria-hidden="true"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 4h12M8 4v16m8-16v16M5 20h14M10 8h4M10 12h4M10 16h4"/></svg></span>
+        <span><span class="block font-display text-2xl font-bold leading-none">Processo</span><span class="mt-1 block text-[10px] font-semibold uppercase tracking-[0.24em] text-white/60">Sistema jurídico</span></span>
+      </a>
+
+      <div class="relative z-10 max-w-xl">
+        <p class="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.22em] text-white/60"><span class="h-px w-10 bg-docket"></span>Gestão jurídica</p>
+        <h1 class="mt-6 font-display text-5xl font-bold leading-[1.05] tracking-[-0.035em] xl:text-6xl">Seu escritório com os processos em ordem.</h1>
+        <p class="mt-6 max-w-lg text-lg leading-8 text-white/70">Acompanhe andamentos, documentos e partes com uma visão única, construída para decisões rápidas e responsáveis.</p>
+
+        <div class="mt-10 flex gap-5">
+          <div class="relative h-32 w-4 shrink-0 border-l-2 border-docket">
+            <span class="absolute -left-[5px] top-0 h-2 w-2 rounded-full bg-docket"></span>
+            <span class="absolute -left-[5px] top-1/2 h-2 w-2 rounded-full bg-docket"></span>
+            <span class="absolute -left-[5px] bottom-0 h-2 w-2 rounded-full bg-docket"></span>
+          </div>
+          <div class="space-y-6 text-sm text-white/70">
+            <p><strong class="block text-white">Centralize o histórico</strong>Movimentações e documentos na mesma linha do tempo.</p>
+            <p><strong class="block text-white">Proteja o foco</strong>Informação essencial sem excesso visual.</p>
+            <p><strong class="block text-white">Aja com contexto</strong>Dados das partes sempre ao alcance.</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="relative z-10 text-xs text-white/45">Ambiente de demonstração · Dados fictícios</p>
+    </section>
+
+    <section class="flex items-center justify-center px-5 py-10 sm:px-8 lg:px-12">
+      <div class="w-full max-w-md">
+        <a href="design-system.html" class="mb-10 flex items-center gap-3 lg:hidden">
+          <span class="grid h-10 w-10 place-items-center rounded-xl bg-ink text-white"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 4h12M8 4v16m8-16v16M5 20h14M10 8h4M10 12h4M10 16h4"/></svg></span>
+          <span class="font-display text-2xl font-bold">Processo</span>
+        </a>
+
+        <div class="mb-8">
+          <p class="text-xs font-bold uppercase tracking-[0.18em] text-navy">Acesso seguro</p>
+          <h2 class="mt-3 font-display text-4xl font-bold tracking-[-0.03em]">Entre na sua conta</h2>
+          <p class="mt-3 text-sm leading-6 text-slate">Use seu e-mail profissional para acessar o painel.</p>
+        </div>
+
+        <div id="alert-box" class="mb-5 hidden rounded-xl border border-danger/30 bg-danger-soft p-4 text-sm text-danger" role="alert" aria-live="assertive">
+          <div class="flex items-start gap-3">
+            <svg class="mt-0.5 h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v6m0 4h.01"/></svg>
+            <div><p class="font-semibold">Revise os dados de acesso</p><p id="alert-message" class="mt-1 leading-5">Preencha os campos obrigatórios.</p></div>
+          </div>
+        </div>
+
+        <form id="login-form" novalidate class="space-y-5">
+          <div>
+            <label for="email" class="text-sm font-semibold">E-mail</label>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="nome@escritorio.com.br" class="mt-2 w-full rounded-xl border border-line bg-white px-4 py-3 text-sm text-ink outline-none transition placeholder:text-slate/60 focus:border-navy focus:ring-4 focus:ring-navy/10" aria-describedby="email-error">
+            <p id="email-error" class="mt-2 hidden text-xs font-medium text-danger"></p>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between gap-4">
+              <label for="password" class="text-sm font-semibold">Senha</label>
+              <a href="#" id="forgot-link" class="rounded text-xs font-semibold text-navy hover:text-ink focus:outline-none focus:ring-2 focus:ring-navy focus:ring-offset-2">Esqueci minha senha</a>
+            </div>
+            <div class="relative mt-2">
+              <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Digite sua senha" class="w-full rounded-xl border border-line bg-white px-4 py-3 pr-12 text-sm text-ink outline-none transition placeholder:text-slate/60 focus:border-navy focus:ring-4 focus:ring-navy/10" aria-describedby="password-error">
+              <button type="button" id="toggle-password" class="absolute inset-y-0 right-0 grid w-12 place-items-center rounded-r-xl text-slate hover:text-ink focus:outline-none focus:ring-2 focus:ring-inset focus:ring-navy" aria-label="Mostrar senha">
+                <svg id="eye-open" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg>
+                <svg id="eye-closed" class="hidden h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m3 3 18 18M10.6 6.2A10 10 0 0 1 12 6c6 0 9.5 6 9.5 6a15 15 0 0 1-2.1 2.8M6.3 6.4C3.9 8 2.5 12 2.5 12s3.5 6 9.5 6a9 9 0 0 0 3-.5M9.8 9.8A3 3 0 0 0 14.2 14.2"/></svg>
+              </button>
+            </div>
+            <p id="password-error" class="mt-2 hidden text-xs font-medium text-danger"></p>
+          </div>
+
+          <label class="flex w-fit cursor-pointer items-center gap-3 text-sm text-slate">
+            <input type="checkbox" class="h-4 w-4 rounded border-line text-navy focus:ring-navy">
+            Manter acesso neste dispositivo
+          </label>
+
+          <button id="submit-button" type="submit" class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-navy px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-ink focus:outline-none focus:ring-2 focus:ring-navy focus:ring-offset-2 active:translate-y-px">
+            <span id="button-label">Entrar na plataforma</span>
+            <svg id="button-arrow" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-5-5 5 5-5 5"/></svg>
+            <svg id="button-spinner" class="hidden h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="9" stroke="currentColor" stroke-width="3"/><path class="opacity-75" fill="currentColor" d="M12 3a9 9 0 0 1 9 9h-3a6 6 0 0 0-6-6V3Z"/></svg>
+          </button>
+        </form>
+
+        <p class="mt-8 text-center text-xs leading-5 text-slate">Ao entrar, você concorda com as políticas internas de segurança do escritório.</p>
+      </div>
+    </section>
+  </main>
+
+  <div id="recovery-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-ink/55 p-5 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="recovery-title">
+    <div class="w-full max-w-md rounded-card border border-line bg-white p-6 shadow-panel sm:p-8">
+      <div class="flex items-start justify-between gap-4">
+        <div><p class="text-xs font-bold uppercase tracking-[0.18em] text-navy">Recuperação</p><h3 id="recovery-title" class="mt-2 font-display text-2xl font-bold">Redefinir senha</h3></div>
+        <button id="close-modal" class="grid h-9 w-9 place-items-center rounded-lg text-slate hover:bg-mist hover:text-ink focus:outline-none focus:ring-2 focus:ring-navy" aria-label="Fechar"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+      </div>
+      <p class="mt-4 text-sm leading-6 text-slate">No produto real, enviaremos um link para o e-mail cadastrado. Neste protótipo, a ação é apenas demonstrativa.</p>
+      <button id="confirm-recovery" class="mt-6 w-full rounded-xl bg-navy px-5 py-3 text-sm font-semibold text-white hover:bg-ink focus:outline-none focus:ring-2 focus:ring-navy focus:ring-offset-2">Entendi</button>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('login-form');
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const alertBox = document.getElementById('alert-box');
+    const alertMessage = document.getElementById('alert-message');
+    const submitButton = document.getElementById('submit-button');
+    const buttonLabel = document.getElementById('button-label');
+    const buttonArrow = document.getElementById('button-arrow');
+    const buttonSpinner = document.getElementById('button-spinner');
+
+    const setFieldError = (input, message) => {
+      const error = document.getElementById(`${input.id}-error`);
+      input.classList.remove('border-line');
+      input.classList.add('border-danger', 'bg-danger-soft');
+      input.setAttribute('aria-invalid', 'true');
+      error.textContent = message;
+      error.classList.remove('hidden');
+    };
+
+    const clearFieldError = (input) => {
+      const error = document.getElementById(`${input.id}-error`);
+      input.classList.remove('border-danger', 'bg-danger-soft');
+      input.classList.add('border-line');
+      input.removeAttribute('aria-invalid');
+      error.classList.add('hidden');
+    };
+
+    [email, password].forEach((input) => input.addEventListener('input', () => {
+      clearFieldError(input);
+      alertBox.classList.add('hidden');
+    }));
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      let valid = true;
+      clearFieldError(email);
+      clearFieldError(password);
+
+      if (!email.value.trim()) { setFieldError(email, 'Informe seu e-mail.'); valid = false; }
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) { setFieldError(email, 'Informe um e-mail válido.'); valid = false; }
+      if (!password.value.trim()) { setFieldError(password, 'Informe sua senha.'); valid = false; }
+
+      if (!valid) {
+        alertMessage.textContent = 'Preencha corretamente os campos destacados.';
+        alertBox.classList.remove('hidden');
+        (email.getAttribute('aria-invalid') ? email : password).focus();
+        return;
+      }
+
+      alertBox.classList.add('hidden');
+      submitButton.disabled = true;
+      submitButton.classList.add('cursor-wait', 'opacity-90');
+      buttonLabel.textContent = 'Validando acesso';
+      buttonArrow.classList.add('hidden');
+      buttonSpinner.classList.remove('hidden');
+      setTimeout(() => { window.location.href = 'dashboard.html'; }, 650);
+    });
+
+    document.getElementById('toggle-password').addEventListener('click', (event) => {
+      const show = password.type === 'password';
+      password.type = show ? 'text' : 'password';
+      document.getElementById('eye-open').classList.toggle('hidden', show);
+      document.getElementById('eye-closed').classList.toggle('hidden', !show);
+      event.currentTarget.setAttribute('aria-label', show ? 'Ocultar senha' : 'Mostrar senha');
+    });
+
+    const modal = document.getElementById('recovery-modal');
+    const openModal = () => { modal.classList.remove('hidden'); modal.classList.add('flex'); document.getElementById('close-modal').focus(); };
+    const closeModal = () => { modal.classList.add('hidden'); modal.classList.remove('flex'); document.getElementById('forgot-link').focus(); };
+    document.getElementById('forgot-link').addEventListener('click', (event) => { event.preventDefault(); openModal(); });
+    document.getElementById('close-modal').addEventListener('click', closeModal);
+    document.getElementById('confirm-recovery').addEventListener('click', closeModal);
+    modal.addEventListener('click', (event) => { if (event.target === modal) closeModal(); });
+    document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && !modal.classList.contains('hidden')) closeModal(); });
+  </script>
+</body>
+</html>

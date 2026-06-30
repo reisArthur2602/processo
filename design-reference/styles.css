@@ -1,0 +1,61 @@
+/* Shared visual foundation for every Processo prototype page. */
+:root {
+  --color-ink: #0b1f33;
+  --color-navy: #123a5a;
+  --color-navy-soft: #eaf1f6;
+  --color-slate: #516272;
+  --color-mist: #f4f7f9;
+  --color-line: #d8e1e8;
+  --color-docket: #b58b4a;
+  --color-success: #147d64;
+  --color-danger: #b43c47;
+  --color-warning: #a66b1f;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+body {
+  font-family: Inter, Arial, sans-serif;
+  background: var(--color-mist);
+  color: var(--color-ink);
+}
+.font-display {
+  font-family: "Source Serif 4", Georgia, serif !important;
+}
+.font-mono {
+  font-family: "IBM Plex Mono", Consolas, monospace !important;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #9aabb8 transparent;
+}
+::selection {
+  background: #dce8f0;
+  color: var(--color-ink);
+}
+
+button,
+input,
+select,
+textarea,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+:focus-visible {
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

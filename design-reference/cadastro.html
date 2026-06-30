@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cadastro de processo jurídico">
+  <title>Cadastrar processo — Processo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="tailwind.config.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    * { scrollbar-width:thin; scrollbar-color:#9AABB8 transparent; }
+    ::selection { background:#DCE8F0; color:#0B1F33; }
+    @media (prefers-reduced-motion: reduce) { *,*::before,*::after { transition-duration:.01ms!important; animation-duration:.01ms!important; } }
+  </style>
+</head>
+<body class="bg-mist font-sans text-ink antialiased">
+  <div class="min-h-screen lg:grid lg:grid-cols-[268px_1fr]">
+    <div id="backdrop" class="fixed inset-0 z-40 hidden bg-ink/50 backdrop-blur-sm lg:hidden"></div>
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 flex w-[268px] -translate-x-full flex-col bg-ink text-white transition-transform duration-200 lg:sticky lg:top-0 lg:h-screen lg:translate-x-0">
+      <div class="absolute inset-y-0 left-0 w-1.5 bg-docket"></div>
+      <div class="flex h-20 items-center justify-between border-b border-white/10 px-6">
+        <a href="dashboard.html" class="flex items-center gap-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-ink">
+          <span class="grid h-10 w-10 place-items-center rounded-xl bg-white text-ink"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 4h12M8 4v16m8-16v16M5 20h14M10 8h4M10 12h4M10 16h4"/></svg></span>
+          <span><span class="block font-display text-xl font-bold leading-none">Processo</span><span class="mt-1 block text-[9px] font-semibold uppercase tracking-[0.24em] text-white/50">Sistema jurídico</span></span>
+        </a>
+        <button id="close-sidebar" class="grid h-9 w-9 place-items-center rounded-lg text-white/60 hover:bg-white/10 hover:text-white lg:hidden" aria-label="Fechar menu"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+      </div>
+      <nav class="flex-1 space-y-1 px-4 py-6" aria-label="Menu principal">
+        <p class="px-3 pb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-white/35">Escritório</p>
+        <a href="dashboard.html" class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-white/65 transition hover:bg-white/5 hover:text-white"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h14v16H5zM8 8h8m-8 4h8m-8 4h5"/></svg>Processos</a>
+        <a href="cadastro.html" aria-current="page" class="flex items-center gap-3 rounded-xl bg-white/10 px-3 py-3 text-sm font-semibold text-white"><svg class="h-5 w-5 text-docket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 5v14M5 12h14"/></svg>Novo processo</a>
+        <a href="detalhes.html" class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-white/65 transition hover:bg-white/5 hover:text-white"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5m0 14h16M8 15l3-3 3 2 5-6"/></svg>Andamentos</a>
+        <div class="my-5 border-t border-white/10"></div>
+        <p class="px-3 pb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-white/35">Referência</p>
+        <a href="design-system.html" class="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-white/65 transition hover:bg-white/5 hover:text-white"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>Design System</a>
+      </nav>
+      <div class="border-t border-white/10 p-4">
+        <div class="flex items-center gap-3 rounded-xl bg-white/5 p-3"><div class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-docket text-sm font-bold text-ink">AC</div><div class="min-w-0 flex-1"><p class="truncate text-sm font-semibold">Ana Carvalho</p><p class="truncate text-xs text-white/45">Advogada administradora</p></div><a href="login.html" class="rounded-lg p-2 text-white/45 hover:bg-white/10 hover:text-white" aria-label="Sair"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 17l5-5-5-5M15 12H3m9-8h7a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-7"/></svg></a></div>
+      </div>
+    </aside>
+
+    <div class="min-w-0">
+      <header class="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-line bg-white/95 px-5 backdrop-blur sm:px-8">
+        <div class="flex items-center gap-3">
+          <button id="open-sidebar" class="grid h-10 w-10 place-items-center rounded-xl border border-line text-ink hover:bg-mist lg:hidden" aria-label="Abrir menu"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+          <a href="dashboard.html" class="inline-flex items-center gap-2 rounded-lg text-sm font-semibold text-slate hover:text-ink focus:outline-none focus:ring-2 focus:ring-navy focus:ring-offset-2"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5m5 5-5-5 5-5"/></svg>Voltar para processos</a>
+        </div>
+        <span class="hidden rounded-full bg-navy-soft px-3 py-1.5 text-xs font-bold text-navy sm:inline">Novo cadastro</span>
+      </header>
+
+      <main class="px-5 py-8 sm:px-8 lg:py-10">
+        <section class="mx-auto max-w-5xl">
+          <div class="mb-8">
+            <p class="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] text-navy"><span class="h-px w-8 bg-docket"></span>Cadastro jurídico</p>
+            <h1 class="mt-3 font-display text-4xl font-bold tracking-[-0.03em] sm:text-5xl">Novo processo</h1>
+            <p class="mt-3 max-w-2xl text-sm leading-6 text-slate">Registre os dados essenciais para iniciar o acompanhamento do caso.</p>
+          </div>
+
+          <div id="form-alert" class="mb-5 hidden rounded-xl border border-danger/30 bg-danger-soft p-4 text-sm text-danger" role="alert" aria-live="assertive">
+            <div class="flex items-start gap-3"><svg class="mt-0.5 h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v6m0 4h.01"/></svg><div><p class="font-semibold">Não foi possível cadastrar</p><p class="mt-1">Preencha corretamente os campos destacados.</p></div></div>
+          </div>
+
+          <form id="case-form" novalidate class="overflow-hidden rounded-card border border-line bg-white shadow-panel">
+            <div class="border-b border-line bg-ink px-5 py-6 text-white sm:px-8">
+              <div class="flex items-start gap-4"><div class="relative mt-1 h-16 w-4 shrink-0 border-l-2 border-docket"><span class="absolute -left-[5px] top-0 h-2 w-2 rounded-full bg-docket"></span><span class="absolute -left-[5px] bottom-0 h-2 w-2 rounded-full bg-docket"></span></div><div><p class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50">Dados principais</p><h2 class="mt-1 font-display text-2xl font-bold">Identificação dos autos</h2><p class="mt-2 text-sm text-white/65">Campos marcados com * são obrigatórios.</p></div></div>
+            </div>
+
+            <div class="space-y-8 p-5 sm:p-8">
+              <fieldset>
+                <legend class="font-display text-2xl font-bold">Processo</legend>
+                <div class="mt-5 grid gap-5 lg:grid-cols-2">
+                  <div class="lg:col-span-2">
+                    <label for="process-number" class="text-sm font-semibold">Número do processo <span class="text-danger">*</span></label>
+                    <input id="process-number" name="processNumber" type="text" inputmode="numeric" maxlength="25" autocomplete="off" placeholder="0000000-00.0000.0.00.0000" class="mt-2 w-full rounded-xl border border-line bg-white px-4 py-3 font-mono text-sm text-ink outline-none transition placeholder:font-sans placeholder:text-slate/55 focus:border-navy focus:ring-4 focus:ring-navy/10" aria-describedby="process-number-help process-number-error">
+                    <div class="mt-2 flex flex-col justify-between gap-1 sm:flex-row"><p id="process-number-help" class="text-xs text-slate">A máscara CNJ será aplicada automaticamente durante a digitação.</p><p id="process-counter" class="font-mono text-[11px] font-semibold text-slate">0/20 dígitos</p></div>
+                    <p id="process-number-error" class="mt-2 hidden text-xs font-medium text-danger"></p>
+                  </div>
+
+                  <div>
+                    <label for="action-type" class="text-sm font-semibold">Tipo de ação <span class="text-danger">*</span></label>
+                    <select id="action-type" name="actionType" class="mt-2 w-full rounded-xl border border-line bg-white px-4 py-3 text-sm text-ink outline-none transition focus:border-navy focus:ring-4 focus:ring-navy/10" aria-describedby="action-type-error">
+                      <option value="">Selecione o tipo de ação</option>
+                      <option>Ação de cobrança</option>
+                      <option>Obrigação de fazer</option>
+                      <option>Indenização por danos materiais</option>
+                      <option>Reclamação trabalhista</option>
+                      <option>Ação revisional</option>
+                      <option>Outro</option>
+                    </select>
+                    <p id="action-type-error" class="mt-2 hidden text-xs font-medium text-danger"></p>
+                  </div>
+
+                  <div>
+                    <label for="tribunal" class="text-sm font-semibold">Tribunal <span class="text-danger">*</span></label>
+                    <input id="tribunal" name="tribunal" type="text" placeholder="Ex.: TJRJ — 12ª Vara Cível" class="mt-2 w-full rounded-xl border border-line bg-white px-4 py-3 text-sm text-ink outline-none transition placeholder:text-slate/55 focus:border-navy focus:ring-4 focus:ring-navy/10" aria-describedby="tribunal-error">
+                    <p id="tribunal-error" class="mt-2 hidden text-xs font-medium text-danger"></p>
+                  </div>
+                </div>
+              </fieldset>
+
+              <div class="border-t border-line"></div>
+
+              <fieldset>
+                <legend class="font-display text-2xl font-bold">Partes envolvidas</legend>
+                <p class="mt-2 text-sm text-slate">Informe os nomes conforme aparecem nos autos.</p>
+                <div class="mt-5 grid gap-5 lg:grid-cols-2">
+                  <div>
+                    <label for="author" class="text-sm font-semibold">Autor <span class="text-danger">*</span></label>
+                    <input id="author" name="author" type="text" placeholder="Nome completo ou razão social" class="mt-2 w-full rounded-xl border border-line bg-white px-4 py-3 text-sm text-ink outline-none transition placeholder:text-slate/55 focus:border-navy focus:ring-4 focus:ring-navy/10" aria-describedby="author-error">
+                    <p id="author-error" class="mt-2 hidden text-xs font-medium text-danger"></p>
+                  </div>
+                  <div>
+                    <label for="defendant" class="text-sm font-semibold">Réu <span class="text-danger">*</span></label>
+                    <input id="defendant" name="defendant" type="text" placeholder="Nome completo ou razão social" class="mt-2 w-full rounded-xl border border-line bg-white px-4 py-3 text-sm text-ink outline-none transition placeholder:text-slate/55 focus:border-navy focus:ring-4 focus:ring-navy/10" aria-describedby="defendant-error">
+                    <p id="defendant-error" class="mt-2 hidden text-xs font-medium text-danger"></p>
+                  </div>
+                </div>
+              </fieldset>
+
+              <div class="rounded-xl border border-navy/15 bg-navy-soft p-4">
+                <div class="flex items-start gap-3"><svg class="mt-0.5 h-5 w-5 shrink-0 text-navy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><p class="text-sm leading-6 text-slate"><strong class="text-ink">Protótipo:</strong> ao salvar, os dados serão validados e a navegação seguirá para a listagem. Nenhum dado é persistido.</p></div>
+              </div>
+            </div>
+
+            <div class="flex flex-col-reverse justify-end gap-3 border-t border-line bg-mist px-5 py-5 sm:flex-row sm:px-8">
+              <a href="dashboard.html" class="inline-flex min-h-11 items-center justify-center rounded-xl border border-line bg-white px-5 py-2.5 text-sm font-semibold text-ink hover:bg-mist focus:outline-none focus:ring-2 focus:ring-navy focus:ring-offset-2">Cancelar</a>
+              <button id="save-button" type="submit" class="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-navy px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-ink focus:outline-none focus:ring-2 focus:ring-navy focus:ring-offset-2 active:translate-y-px">
+                <span id="save-label">Salvar processo</span>
+                <svg id="save-icon" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-5-5 5 5-5 5"/></svg>
+                <svg id="save-spinner" class="hidden h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="9" stroke="currentColor" stroke-width="3"/><path class="opacity-75" fill="currentColor" d="M12 3a9 9 0 0 1 9 9h-3a6 6 0 0 0-6-6V3Z"/></svg>
+              </button>
+            </div>
+          </form>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const sidebar = document.getElementById('sidebar');
+    const backdrop = document.getElementById('backdrop');
+    const openSidebar = () => { sidebar.classList.remove('-translate-x-full'); backdrop.classList.remove('hidden'); document.body.classList.add('overflow-hidden'); };
+    const closeSidebar = () => { sidebar.classList.add('-translate-x-full'); backdrop.classList.add('hidden'); document.body.classList.remove('overflow-hidden'); };
+    document.getElementById('open-sidebar').addEventListener('click', openSidebar);
+    document.getElementById('close-sidebar').addEventListener('click', closeSidebar);
+    backdrop.addEventListener('click', closeSidebar);
+
+    const processNumber = document.getElementById('process-number');
+    const processCounter = document.getElementById('process-counter');
+
+    const formatCNJ = (value) => {
+      const digits = value.replace(/\D/g, '').slice(0, 20);
+      const parts = [];
+      if (digits.length > 0) parts.push(digits.slice(0, 7));
+      if (digits.length > 7) parts.push(`-${digits.slice(7, 9)}`);
+      if (digits.length > 9) parts.push(`.${digits.slice(9, 13)}`);
+      if (digits.length > 13) parts.push(`.${digits.slice(13, 14)}`);
+      if (digits.length > 14) parts.push(`.${digits.slice(14, 16)}`);
+      if (digits.length > 16) parts.push(`.${digits.slice(16, 20)}`);
+      return parts.join('');
+    };
+
+    processNumber.addEventListener('input', () => {
+      const cursorAtEnd = processNumber.selectionStart === processNumber.value.length;
+      processNumber.value = formatCNJ(processNumber.value);
+      const count = processNumber.value.replace(/\D/g, '').length;
+      processCounter.textContent = `${count}/20 dígitos`;
+      processCounter.classList.toggle('text-success', count === 20);
+      processCounter.classList.toggle('text-slate', count !== 20);
+      clearError(processNumber);
+      if (cursorAtEnd) processNumber.setSelectionRange(processNumber.value.length, processNumber.value.length);
+    });
+
+    const fields = [
+      { input: processNumber, message: 'Informe o número completo no padrão CNJ.', validate: (value) => /^\d{7}-\d{2}\.\d{4}\.\d\.\d{2}\.\d{4}$/.test(value) },
+      { input: document.getElementById('action-type'), message: 'Selecione o tipo de ação.', validate: (value) => Boolean(value.trim()) },
+      { input: document.getElementById('tribunal'), message: 'Informe o tribunal ou a vara.', validate: (value) => value.trim().length >= 3 },
+      { input: document.getElementById('author'), message: 'Informe o autor do processo.', validate: (value) => value.trim().length >= 2 },
+      { input: document.getElementById('defendant'), message: 'Informe o réu do processo.', validate: (value) => value.trim().length >= 2 }
+    ];
+
+    function setError(input, message) {
+      const error = document.getElementById(`${input.id}-error`);
+      input.classList.remove('border-line');
+      input.classList.add('border-danger', 'bg-danger-soft');
+      input.setAttribute('aria-invalid', 'true');
+      error.textContent = message;
+      error.classList.remove('hidden');
+    }
+
+    function clearError(input) {
+      const error = document.getElementById(`${input.id}-error`);
+      input.classList.remove('border-danger', 'bg-danger-soft');
+      input.classList.add('border-line');
+      input.removeAttribute('aria-invalid');
+      error.classList.add('hidden');
+    }
+
+    fields.forEach(({ input }) => {
+      input.addEventListener(input.tagName === 'SELECT' ? 'change' : 'input', () => {
+        clearError(input);
+        document.getElementById('form-alert').classList.add('hidden');
+      });
+    });
+
+    document.getElementById('case-form').addEventListener('submit', (event) => {
+      event.preventDefault();
+      let firstInvalid = null;
+
+      fields.forEach(({ input, message, validate }) => {
+        clearError(input);
+        if (!validate(input.value)) {
+          setError(input, message);
+          if (!firstInvalid) firstInvalid = input;
+        }
+      });
+
+      if (firstInvalid) {
+        document.getElementById('form-alert').classList.remove('hidden');
+        firstInvalid.focus();
+        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      const saveButton = document.getElementById('save-button');
+      saveButton.disabled = true;
+      saveButton.classList.add('cursor-wait', 'opacity-90');
+      document.getElementById('save-label').textContent = 'Salvando processo';
+      document.getElementById('save-icon').classList.add('hidden');
+      document.getElementById('save-spinner').classList.remove('hidden');
+      setTimeout(() => { window.location.href = 'dashboard.html?cadastrado=1'; }, 700);
+    });
+  </script>
+</body>
+</html>

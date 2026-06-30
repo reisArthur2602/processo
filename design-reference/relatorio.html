@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relatório do processo 0008421-33.2025.8.19.0001</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; color: #0B1F33; font-family: Arial, sans-serif; background: #eef3f7; }
+    .toolbar { position: sticky; top: 0; z-index: 10; display: flex; justify-content: flex-end; gap: 12px; padding: 14px 20px; background: #0B1F33; }
+    .button { border: 0; border-radius: 10px; padding: 11px 16px; font-size: 14px; font-weight: 700; cursor: pointer; }
+    .button-primary { background: #fff; color: #0B1F33; }
+    .button-secondary { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.25); }
+    .page { width: min(900px, calc(100% - 32px)); margin: 28px auto; padding: 42px; background: #fff; box-shadow: 0 18px 50px rgba(11,31,51,.12); }
+    .header { display: flex; justify-content: space-between; gap: 24px; padding-bottom: 22px; border-bottom: 3px solid #173A5E; }
+    .brand { font-family: Georgia, serif; font-size: 27px; font-weight: 700; }
+    .eyebrow { margin: 4px 0 0; color: #617180; font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+    h1 { margin: 26px 0 6px; font-family: Georgia, serif; font-size: 30px; }
+    h2 { margin: 28px 0 12px; font-family: Georgia, serif; font-size: 19px; border-bottom: 1px solid #D7E0E7; padding-bottom: 8px; }
+    p { line-height: 1.55; }
+    .cnj { font-family: Consolas, monospace; color: #173A5E; font-size: 13px; font-weight: 700; }
+    .status { display: inline-block; border-radius: 999px; padding: 6px 10px; background: #E7F5EC; color: #237A46; font-size: 11px; font-weight: 700; }
+    .generated-at { margin-top: 8px; color: #617180; font-size: 11px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .item { min-height: 72px; padding: 14px; border: 1px solid #D7E0E7; border-radius: 8px; }
+    .label { margin-bottom: 5px; color: #617180; font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    .value { font-size: 14px; font-weight: 700; }
+    .muted { margin-top: 4px; color: #617180; font-size: 12px; }
+    .timeline { margin: 0; padding: 0; list-style: none; }
+    .timeline li { position: relative; margin-left: 7px; padding: 0 0 20px 25px; border-left: 2px solid #D7E0E7; }
+    .timeline li:last-child { padding-bottom: 0; }
+    .timeline li::before { content: ''; position: absolute; left: -7px; top: 3px; width: 12px; height: 12px; border-radius: 50%; background: #173A5E; border: 3px solid #fff; box-shadow: 0 0 0 1px #173A5E; }
+    .date { color: #617180; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+    .event { margin: 5px 0; font-size: 14px; font-weight: 700; }
+    .description { margin: 0; color: #445563; font-size: 12px; }
+    .footer { margin-top: 38px; padding-top: 16px; border-top: 1px solid #D7E0E7; color: #617180; font-size: 10px; display: flex; justify-content: space-between; }
+    @page { size: A4; margin: 12mm; }
+    @media print {
+      body { background: #fff; }
+      .toolbar { display: none !important; }
+      .page { width: 100%; max-width: none; margin: 0; padding: 0; box-shadow: none; }
+      .item, .timeline li { break-inside: avoid; }
+    }
+    @media (max-width: 640px) {
+      .grid { grid-template-columns: 1fr; }
+      .page { width: 100%; margin: 0; padding: 24px; box-shadow: none; }
+      .header { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <button class="button button-secondary" type="button" onclick="window.close()">Fechar</button>
+    <button class="button button-primary" type="button" onclick="window.print()">Salvar como PDF</button>
+  </div>
+
+  <main class="page">
+    <header class="header">
+      <div>
+        <div class="brand">Processo</div>
+        <p class="eyebrow">Relatório processual</p>
+      </div>
+      <div style="text-align:right">
+        <span class="status">Processo ativo</span>
+        <p id="generated-at" class="generated-at"></p>
+      </div>
+    </header>
+
+    <h1>Ação de cobrança</h1>
+    <p class="cnj">0008421-33.2025.8.19.0001</p>
+    <p style="color:#617180;font-size:13px">Marina Duarte contra Nova Aurora Serviços Ltda.</p>
+
+    <h2>Dados do processo</h2>
+    <section class="grid">
+      <div class="item"><div class="label">Autor</div><div class="value">Marina Duarte</div><div class="muted">CPF 123.456.789-00</div></div>
+      <div class="item"><div class="label">Réu</div><div class="value">Nova Aurora Serviços Ltda.</div><div class="muted">CNPJ 12.345.678/0001-90</div></div>
+      <div class="item"><div class="label">Tribunal e vara</div><div class="value">TJRJ — 12ª Vara Cível</div><div class="muted">Comarca da Capital</div></div>
+      <div class="item"><div class="label">Valor da causa</div><div class="value">R$ 48.750,00</div></div>
+      <div class="item"><div class="label">Tipo da ação</div><div class="value">Ação de cobrança</div></div>
+      <div class="item"><div class="label">Status</div><div class="value">Ativo</div></div>
+    </section>
+
+    <h2>Resumo dos andamentos</h2>
+    <ol class="timeline">
+      <li><div class="date">Hoje · 09:42</div><div class="event">Juntada de petição de manifestação</div><p class="description">A parte autora apresentou manifestação sobre os documentos anexados pela ré.</p></li>
+      <li><div class="date">27 jun. 2026 · 15:18</div><div class="event">Intimação eletrônica expedida</div><p class="description">Aberto prazo de cinco dias para manifestação da parte autora.</p></li>
+      <li><div class="date">24 jun. 2026 · 10:06</div><div class="event">Contestação apresentada</div><p class="description">A parte ré protocolou contestação acompanhada de três documentos.</p></li>
+      <li><div class="date">10 jun. 2026 · 13:30</div><div class="event">Audiência de conciliação realizada</div><p class="description">Tentativa de acordo sem composição entre as partes. Processo seguirá para instrução.</p></li>
+      <li><div class="date">02 abr. 2026 · 08:15</div><div class="event">Distribuição do processo</div><p class="description">Processo distribuído por sorteio para a 12ª Vara Cível.</p></li>
+    </ol>
+
+    <h2>Documentos cadastrados</h2>
+    <section class="grid">
+      <div class="item"><div class="value">Petição inicial</div><div class="muted">peticao-inicial.pdf</div></div>
+      <div class="item"><div class="value">Contestação</div><div class="muted">contestacao.pdf</div></div>
+      <div class="item"><div class="value">Ata de audiência</div><div class="muted">ata-audiencia.pdf</div></div>
+      <div class="item"><div class="value">Memória de cálculo</div><div class="muted">planilha-calculo.xlsx</div></div>
+    </section>
+
+    <footer class="footer"><span>Relatório gerado pela Plataforma Processo</span><span>Documento de demonstração</span></footer>
+  </main>
+
+  <script>
+    const generatedAt = new Intl.DateTimeFormat('pt-BR', {
+      dateStyle: 'long',
+      timeStyle: 'short'
+    }).format(new Date());
+
+    document.getElementById('generated-at').textContent = `Gerado em ${generatedAt}`;
+  </script>
+</body>
+</html>
