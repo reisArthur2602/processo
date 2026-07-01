@@ -48,20 +48,25 @@ const UploadDocumentDialog = ({
     if (!file) return;
 
     setUploading(true);
-    const formData = new FormData();
-    formData.append("file", file);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
 
-    const result = await uploadDocument(caseId, formData);
-    setUploading(false);
+      const result = await uploadDocument(caseId, formData);
 
-    if (!result.ok) {
-      toast.error(result.message);
-      return;
+      if (!result.ok) {
+        toast.error(result.message);
+        return;
+      }
+
+      toast.success(result.message);
+      removeFile();
+      onOpenChange(false);
+    } catch {
+      toast.error("Não foi possível anexar o documento. Tente novamente.");
+    } finally {
+      setUploading(false);
     }
-
-    toast.success(result.message);
-    removeFile();
-    onOpenChange(false);
   };
 
   return (

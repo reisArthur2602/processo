@@ -13,7 +13,6 @@ const fetchCase = (caseId: string) =>
         orderBy: { occurredAt: "asc" },
         include: { createdBy: { select: { name: true } } },
       },
-      documents: { orderBy: { createdAt: "desc" } },
       deadlines: {
         where: { status: "PENDING" },
         orderBy: { dueAt: "asc" },
@@ -67,17 +66,6 @@ const generateHtml = (
         <td>${fmtShort(d.dueAt)}</td>
         <td>${d.title}</td>
         <td>${d.description ?? "—"}</td>
-      </tr>`,
-    )
-    .join("");
-
-  const documentsHtml = caseData.documents
-    .map(
-      (d) => `
-      <tr>
-        <td>${fmtShort(d.createdAt)}</td>
-        <td>${d.name}</td>
-        <td>${(d.size / 1024).toFixed(0)} KB</td>
       </tr>`,
     )
     .join("");
@@ -325,22 +313,6 @@ const generateHtml = (
         <tbody>${deadlinesHtml}</tbody>
       </table>`
       : '<p class="empty">Nenhum prazo pendente.</p>'
-  }
-
-  <h2>Documentos (${caseData.documents.length})</h2>
-  ${
-    caseData.documents.length > 0
-      ? `<table>
-        <thead>
-          <tr>
-            <th>Data</th>
-            <th>Arquivo</th>
-            <th>Tamanho</th>
-          </tr>
-        </thead>
-        <tbody>${documentsHtml}</tbody>
-      </table>`
-      : '<p class="empty">Nenhum documento anexado.</p>'
   }
 
   <footer>

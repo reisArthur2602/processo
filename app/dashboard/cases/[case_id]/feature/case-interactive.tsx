@@ -9,6 +9,8 @@ import {
   FilePlus,
   FileText,
   Plus,
+  Trash2,
+  TriangleAlert,
   X,
 } from "lucide-react";
 import { useState } from "react";
@@ -22,6 +24,7 @@ import {
   DialogClose,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
@@ -35,6 +38,7 @@ import {
   MOVEMENT_TYPES,
 } from "@/schema/add-movement-schema";
 import { addMovement } from "../actions/add-movement";
+import { deleteDocument } from "../actions/delete-document";
 import { UploadDocumentDialog } from "./upload-document-dialog";
 
 export type MovementRow = {
@@ -183,6 +187,10 @@ const CaseInteractive = ({
     "timeline",
   );
   const [createReminder, setCreateReminder] = useState(false);
+  const [docPendingDelete, setDocPendingDelete] = useState<DocumentRow | null>(
+    null,
+  );
+  const [deletingDoc, setDeletingDoc] = useState(false);
 
   const {
     register,
@@ -217,6 +225,20 @@ const CaseInteractive = ({
       description: "",
     });
     setCreateReminder(false);
+  };
+
+  const handleDeleteDocument = async () => {
+    if (!docPendingDelete) return;
+    setDeletingDoc(true);
+    const result = await deleteDocument(caseId, docPendingDelete.id);
+    setDeletingDoc(false);
+
+    if (!result.ok) {
+      toast.error(result.message);
+      return;
+    }
+    toast.success(result.message);
+    setDocPendingDelete(null);
   };
 
   const onSubmit = async (data: AddMovementInput) => {
@@ -605,14 +627,24 @@ const CaseInteractive = ({
                           </p>
                         </div>
                       </div>
-                      <a
-                        href={`/dashboard/cases/${caseId}/documents/${doc.id}`}
-                        download={doc.originalName}
-                        className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-line px-4 py-2 text-sm font-semibold text-navy hover:bg-white hover:shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2"
-                      >
-                        <Download className="h-4 w-4" aria-hidden="true" />
-                        Baixar
-                      </a>
+                      <div className="flex items-center gap-2">
+                        <a
+                          href={`/dashboard/cases/${caseId}/documents/${doc.id}`}
+                          download={doc.originalName}
+                          className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-line px-4 py-2 text-sm font-semibold text-navy hover:bg-white hover:shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2"
+                        >
+                          <Download className="h-4 w-4" aria-hidden="true" />
+                          Baixar
+                        </a>
+                        <button
+                          type="button"
+                          onClick={() => setDocPendingDelete(doc)}
+                          aria-label={`Excluir ${doc.name}`}
+                          className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-line text-danger hover:bg-danger-soft hover:border-danger/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-danger focus-visible:ring-offset-2"
+                        >
+                          <Trash2 className="h-4 w-4" aria-hidden="true" />
+                        </button>
+                      </div>
                     </article>
                   ))}
                 </div>
@@ -809,6 +841,42 @@ const CaseInteractive = ({
         open={uploadDialogOpen}
         onOpenChange={setUploadDialogOpen}
       />
+
+      {/* ── Delete document confirmation ── */}
+      <Dialog
+        open={!!docPendingDelete}
+        onOpenChange={(open) => !open && setDocPendingDelete(null)}
+      >
+        <DialogContent>
+          <div className="grid h-12 w-12 place-items-center rounded-2xl bg-danger-soft text-danger">
+            <TriangleAlert className="h-6 w-6" aria-hidden="true" />
+          </div>
+          <DialogTitle className="mt-4">Excluir documento?</DialogTitle>
+          <DialogDescription className="mt-2">
+            Esta ação não pode ser desfeita. O arquivo{" "}
+            <strong className="font-semibold text-ink">
+              {docPendingDelete?.name}
+            </strong>{" "}
+            será permanentemente removido do processo.
+          </DialogDescription>
+          <DialogFooter className="mt-6 gap-3">
+            <Button
+              variant="outline"
+              onClick={() => setDocPendingDelete(null)}
+              disabled={deletingDoc}
+            >
+              Cancelar
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleDeleteDocument}
+              loading={deletingDoc}
+            >
+              Confirmar exclusão
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

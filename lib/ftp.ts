@@ -33,6 +33,16 @@ export const uploadToFtp = async (
   }
 };
 
+export const deleteFromFtp = async (remotePath: string): Promise<void> => {
+  const client = new Client();
+  try {
+    await client.access(getFtpConfig());
+    await client.remove(remotePath, true);
+  } finally {
+    client.close();
+  }
+};
+
 export const downloadFromFtp = async (remotePath: string): Promise<Buffer> => {
   const client = new Client();
   try {

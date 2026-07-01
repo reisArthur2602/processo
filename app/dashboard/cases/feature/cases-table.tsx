@@ -171,7 +171,7 @@ const CasesTable = ({ data }: CasesTableProps) => {
             ? `Mostrando ${pageRows.length} de ${filteredRows.length} processos`
             : "Nenhum processo encontrado"}
         </span>
-        {table.getPageCount() > 1 && (
+        {pageRows.length > 0 && (
           <div className="flex items-center gap-3">
             <span>
               Página {table.getState().pagination.pageIndex + 1} de{" "}
