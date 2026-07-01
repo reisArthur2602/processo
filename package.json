@@ -7,7 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "biome check",
-    "format": "biome format --write"
+    "format": "biome format --write",
+    "pm2:start": "pm2 start ecosystem.config.js",
+    "pm2:restart": "pm2 restart processo",
+    "pm2:stop": "pm2 stop processo",
+    "pm2:logs": "pm2 logs processo"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
