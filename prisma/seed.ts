@@ -2,41 +2,29 @@ import bcrypt from "bcryptjs";
 import prisma from "../lib/prisma";
 
 const main = async () => {
+  const username = process.env.SEED_ADMIN_USERNAME;
+  const password = process.env.SEED_ADMIN_PASSWORD;
+
+  if (!username || !password) {
+    throw new Error(
+      "SEED_ADMIN_USERNAME e SEED_ADMIN_PASSWORD devem estar definidos no .env",
+    );
+  }
+
   console.log("Iniciando seed...");
 
   await prisma.user.deleteMany();
 
-  const [admin, lawyer1, lawyer2] = await Promise.all([
-    prisma.user.create({
-      data: {
-        name: "Arthur Admin",
-        username: "arthur",
-        passwordHash: await bcrypt.hash("admin123", 12),
-        admin: true,
-      },
-    }),
-    prisma.user.create({
-      data: {
-        name: "Ana Carvalho",
-        username: "ana.carvalho",
-        passwordHash: await bcrypt.hash("senha123", 12),
-        admin: false,
-      },
-    }),
-    prisma.user.create({
-      data: {
-        name: "Carlos Mendes",
-        username: "carlos.mendes",
-        passwordHash: await bcrypt.hash("senha123", 12),
-        admin: false,
-      },
-    }),
-  ]);
+  const admin = await prisma.user.create({
+    data: {
+      name: username,
+      username,
+      passwordHash: await bcrypt.hash(password, 12),
+      admin: true,
+    },
+  });
 
-  console.log("Usuários criados:");
-  console.log(`  Admin:     ${admin.username} (${admin.name})`);
-  console.log(`  Advogado:  ${lawyer1.username} (${lawyer1.name})`);
-  console.log(`  Advogado:  ${lawyer2.username} (${lawyer2.name})`);
+  console.log(`Usuário criado: ${admin.username}`);
   console.log("Seed concluído.");
 };
 

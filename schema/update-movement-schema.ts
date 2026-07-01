@@ -1,14 +1,7 @@
 import { z } from "zod";
+import { MOVEMENT_TYPES } from "./add-movement-schema";
 
-const MOVEMENT_TYPES = [
-  "Petição",
-  "Prazo",
-  "Audiência",
-  "Decisão",
-  "Documento",
-] as const;
-
-export const addMovementSchema = z.object({
+export const updateMovementSchema = z.object({
   title: z.string().min(1, "Informe o título da movimentação."),
   movementType: z.enum(MOVEMENT_TYPES, {
     error: "Selecione o tipo de movimentação.",
@@ -19,5 +12,4 @@ export const addMovementSchema = z.object({
     .min(10, "Informe uma descrição com pelo menos 10 caracteres."),
 });
 
-export type AddMovementInput = z.infer<typeof addMovementSchema>;
-export { MOVEMENT_TYPES };
+export type UpdateMovementInput = z.infer<typeof updateMovementSchema>;

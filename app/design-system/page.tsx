@@ -145,7 +145,7 @@ const tableData = [
 ];
 
 const DesignSystemPage = () => (
-  <div className="min-h-screen bg-mist">
+  <div className="flex flex-1 flex-col bg-mist">
     {/* Hero */}
     <header className="relative overflow-hidden border-b border-line bg-white">
       <div className="absolute inset-y-0 left-0 w-2 bg-docket" />

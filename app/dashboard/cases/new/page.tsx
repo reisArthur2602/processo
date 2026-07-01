@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { CaseForm } from "./feature/case-form";
+
+export const metadata: Metadata = {
+  title: "Novo processo",
+  description: "Cadastre um novo processo jurídico no sistema.",
+};
 
 const NewCasePage = async () => {
   return (

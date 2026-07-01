@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Mono, Inter, Source_Serif_4 } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
@@ -21,9 +21,46 @@ const ibmPlexMono = IBM_Plex_Mono({
   weight: ["500", "600"],
 });
 
+const baseUrl = process.env.NEXT_PUBLIC_URL ?? "http://localhost:3000";
+
 export const metadata: Metadata = {
-  title: "Processo — Sistema Jurídico",
-  description: "Plataforma jurídica para gestão de processos",
+  metadataBase: new URL(baseUrl),
+  title: {
+    default: "Processo — Sistema Jurídico",
+    template: "%s — Processo",
+  },
+  description:
+    "Plataforma jurídica para gestão de processos, movimentações, documentos e partes.",
+  applicationName: "Processo",
+  authors: [{ name: "Processo" }],
+  keywords: ["jurídico", "processo", "advocacia", "gestão jurídica", "escritório de advocacia"],
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: { index: false, follow: false },
+  },
+  openGraph: {
+    type: "website",
+    siteName: "Processo",
+    title: "Processo — Sistema Jurídico",
+    description:
+      "Plataforma jurídica para gestão de processos, movimentações e documentos.",
+    locale: "pt_BR",
+    url: baseUrl,
+  },
+  twitter: {
+    card: "summary",
+    title: "Processo — Sistema Jurídico",
+    description:
+      "Plataforma jurídica para gestão de processos, movimentações e documentos.",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0b1f33",
+  colorScheme: "light",
+  width: "device-width",
+  initialScale: 1,
 };
 
 const RootLayout = ({
@@ -36,7 +73,7 @@ const RootLayout = ({
       lang="pt-BR"
       className={`${inter.variable} ${sourceSerif4.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-mist text-ink font-sans">
+      <body className="flex min-h-full flex-col bg-mist font-sans text-ink">
         {children}
         <Toaster position="top-right" richColors />
       </body>

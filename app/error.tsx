@@ -15,7 +15,7 @@ const GlobalError = ({
   }, [error]);
 
   return (
-    <div className="grid min-h-screen place-items-center px-5">
+    <div className="flex flex-1 items-center justify-center px-5">
       <ErrorState
         title="Algo deu errado"
         description="Ocorreu um erro inesperado. Tente novamente em instantes."

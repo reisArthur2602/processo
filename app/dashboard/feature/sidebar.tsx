@@ -4,6 +4,7 @@ import { FileText, LogOut, Plus, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { logout } from "@/app/dashboard/actions/logout";
+import { Logo } from "@/components/shared/logo";
 import { cn } from "@/lib/utils";
 
 interface NavItem {
@@ -63,31 +64,9 @@ const Sidebar = ({
       <div className="flex h-20 items-center justify-between border-b border-white/10 px-6">
         <Link
           href="/dashboard/cases"
-          className="flex items-center gap-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-ink"
+          className="rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-ink"
         >
-          <span
-            className="grid h-10 w-10 place-items-center rounded-xl bg-white text-ink"
-            aria-hidden="true"
-          >
-            <svg
-              className="h-5 w-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              aria-hidden="true"
-            >
-              <path d="M6 4h12M8 4v16m8-16v16M5 20h14M10 8h4M10 12h4M10 16h4" />
-            </svg>
-          </span>
-          <span>
-            <span className="block font-display text-xl font-bold leading-none">
-              Processo
-            </span>
-            <span className="mt-1 block text-[9px] font-semibold uppercase tracking-[0.24em] text-white/50">
-              Sistema jurídico
-            </span>
-          </span>
+          <Logo variant="dark" size="sm" />
         </Link>
 
         <button

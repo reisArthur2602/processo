@@ -20,7 +20,7 @@ const DashboardShell = ({
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen lg:grid lg:grid-cols-[268px_1fr]">
+    <div className="flex flex-1 flex-col lg:grid lg:grid-cols-[268px_1fr]">
       {/* Mobile backdrop */}
       {sidebarOpen && (
         <button
