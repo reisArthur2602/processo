@@ -13,10 +13,7 @@ const getPageData = cache(async () => {
     prisma.case.findMany({
       orderBy: { updatedAt: "desc" },
       include: {
-        parties: {
-          where: { partyType: "PLAINTIFF" },
-          take: 1,
-        },
+        client: { select: { name: true, personType: true } },
         movements: {
           orderBy: { occurredAt: "desc" },
           take: 1,
@@ -34,13 +31,12 @@ const CasesData = async () => {
 
   const tableData: CaseRow[] = cases.map((c) => ({
     id: c.id,
-    number: c.number,
-    actionType: c.actionType,
+    number: c.number ?? "—",
+    actionType: c.actionType ?? "—",
     status: c.status as CaseRow["status"],
     updatedAt: c.updatedAt.toISOString(),
-    clientName: c.parties[0]?.name ?? "—",
-    clientPersonType: (c.parties[0]?.personType ??
-      "INDIVIDUAL") as CaseRow["clientPersonType"],
+    clientName: c.client.name,
+    clientPersonType: c.client.personType as CaseRow["clientPersonType"],
     lastMovement: c.movements[0]?.title ?? null,
   }));
 

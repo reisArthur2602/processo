@@ -17,8 +17,23 @@ export const createCase = async (input: CreateCaseInput) => {
       return { ok: false, message: "Dados inválidos." };
     }
 
-    const { number, actionType, court, plaintiffName, defendantName } =
-      parsed.data;
+    const {
+      clientId,
+      number,
+      serviceArea,
+      actionType,
+      court,
+      plaintiffName,
+      defendantName,
+    } = parsed.data;
+
+    const client = await prisma.client.findUnique({
+      where: { id: clientId },
+      select: { id: true },
+    });
+    if (!client) {
+      return { ok: false, message: "Cliente não encontrado." };
+    }
 
     const existing = await prisma.case.findUnique({ where: { number } });
     if (existing) {
@@ -30,8 +45,10 @@ export const createCase = async (input: CreateCaseInput) => {
 
     const newCase = await prisma.case.create({
       data: {
+        clientId,
         number,
         title: `${plaintiffName} x ${defendantName}`,
+        serviceArea,
         actionType,
         court,
         responsibleLawyerId: user.id,
@@ -54,6 +71,7 @@ export const createCase = async (input: CreateCaseInput) => {
     });
 
     revalidatePath("/dashboard/cases");
+    revalidatePath(`/dashboard/clients/${clientId}`);
 
     return {
       ok: true,

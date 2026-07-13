@@ -1,8 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
     provider = "prisma-client"
     output   = "../app/generated/prisma"
@@ -12,10 +10,22 @@ datasource db {
     provider = "postgresql"
 }
 
+enum PersonType {
+    INDIVIDUAL
+    COMPANY
+}
+
+enum ClientStatus {
+    ACTIVE
+    INACTIVE
+    PROSPECT
+}
+
 enum CaseStatus {
     ACTIVE
     SUSPENDED
     ARCHIVED
+    CLOSED
 }
 
 enum PartyType {
@@ -24,15 +34,64 @@ enum PartyType {
     OTHER
 }
 
-enum PersonType {
-    INDIVIDUAL
-    COMPANY
+enum IntakeStatus {
+    DRAFT
+    OPEN
+    FINALIZED
+    CONVERTED
+    CANCELED
+}
+
+enum ProvidenceType {
+    REQUEST_DOCUMENTS
+    PREPARE_LEGAL_OPINION
+    SCHEDULE_RETURN
+    PREPARE_CONTRACT
+    FILE_LAWSUIT
+    SETTLEMENT_ATTEMPT
+    OTHER
 }
 
 enum DeadlineStatus {
     PENDING
     COMPLETED
     CANCELED
+}
+
+enum AppointmentType {
+    HEARING
+    MEETING
+    RETURN
+    DEADLINE
+    OTHER
+}
+
+enum AppointmentStatus {
+    SCHEDULED
+    COMPLETED
+    CANCELED
+}
+
+enum PaymentMethod {
+    CASH
+    PIX
+    BANK_TRANSFER
+    CREDIT_CARD
+    DEBIT_CARD
+    BOLETO
+    INSTALLMENTS
+    OTHER
+}
+
+enum DocumentCategory {
+    POWER_OF_ATTORNEY
+    CONTRACT
+    PETITION
+    DECISION
+    ID_DOCUMENT
+    PROOF
+    REPORT
+    OTHER
 }
 
 enum InviteStatus {
@@ -50,11 +109,17 @@ model User {
     admin        Boolean @default(false)
     isActive     Boolean @default(true)
 
-    responsibleCases Case[]     @relation("ResponsibleLawyer")
-    createdCases     Case[]     @relation("CaseCreator")
-    movements        Movement[]
-    documents        Document[]
-    deadlines        Deadline[]
+    createdClients      Client[]      @relation("ClientCreator")
+    responsibleClients  Client[]      @relation("ClientResponsible")
+    responsibleCases    Case[]        @relation("ResponsibleLawyer")
+    createdCases        Case[]        @relation("CaseCreator")
+    responsibleIntakes  Intake[]      @relation("IntakeResponsible")
+    createdIntakes      Intake[]      @relation("IntakeCreator")
+    movements           Movement[]
+    uploadedDocuments   Document[]    @relation("DocumentUploader")
+    deletedDocuments    Document[]    @relation("DocumentDeleter")
+    deadlines           Deadline[]
+    appointments        Appointment[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -63,16 +128,121 @@ model User {
     @@index([isActive])
 }
 
+model Client {
+    id         String       @id @default(uuid())
+    personType PersonType  @default(INDIVIDUAL)
+    status     ClientStatus @default(PROSPECT)
+
+    name       String
+    document   String?      @unique
+    rg         String?
+    birthDate  DateTime?
+    maritalStatus String?
+    profession String?
+
+    phone String?
+    email String?
+
+    zipCode      String?
+    street       String?
+    number       String?
+    complement   String?
+    district     String?
+    city         String?
+    state        String?
+
+    notes String? @db.Text
+
+    responsibleId String?
+    responsible   User?   @relation("ClientResponsible", fields: [responsibleId], references: [id])
+
+    createdById String
+    createdBy   User   @relation("ClientCreator", fields: [createdById], references: [id])
+
+    intakes Intake[]
+    cases   Case[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([name])
+    @@index([document])
+    @@index([phone])
+    @@index([email])
+    @@index([status])
+    @@index([responsibleId])
+    @@index([createdById])
+    @@index([updatedAt])
+}
+
+model Intake {
+    id     String       @id @default(uuid())
+    number String       @unique
+    status IntakeStatus @default(OPEN)
+
+    serviceArea String
+
+    clientReport String? @db.VarChar(1800)
+    preliminaryAnalysis String? @db.VarChar(1800)
+
+    providences ProvidenceType[] @default([])
+    otherProvidence String? @db.Text
+
+    requestedDocuments String[] @default([])
+
+    feeAmount      Decimal? @db.Decimal(12, 2)
+    amountReceived Decimal? @db.Decimal(12, 2)
+    paymentMethod  PaymentMethod?
+    paymentNotes   String? @db.Text
+
+    attendedAt DateTime @default(now())
+    finalizedAt DateTime?
+
+    clientId String
+    client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+    caseId String?
+    case   Case?   @relation(fields: [caseId], references: [id], onDelete: SetNull)
+
+    responsibleId String
+    responsible   User   @relation("IntakeResponsible", fields: [responsibleId], references: [id])
+
+    createdById String
+    createdBy   User   @relation("IntakeCreator", fields: [createdById], references: [id])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([number])
+    @@index([status])
+    @@index([serviceArea])
+    @@index([clientId])
+    @@index([caseId])
+    @@index([responsibleId])
+    @@index([createdById])
+    @@index([attendedAt])
+}
+
 model Case {
-    id          String     @id @default(uuid())
-    number      String     @unique
-    title       String
-    actionType  String
-    court       String
-    division    String?
+    id String @id @default(uuid())
+
+    number String? @unique
+    title  String
+
+    serviceArea String
+    actionType  String?
+
+    court        String?
+    division     String?
+    district     String?
+    currentPhase String?
+
     claimValue  Decimal?   @db.Decimal(12, 2)
     status      CaseStatus @default(ACTIVE)
     description String?    @db.Text
+
+    clientId String
+    client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
 
     responsibleLawyerId String
     responsibleLawyer   User   @relation("ResponsibleLawyer", fields: [responsibleLawyerId], references: [id])
@@ -80,16 +250,21 @@ model Case {
     createdById String
     createdBy   User   @relation("CaseCreator", fields: [createdById], references: [id])
 
-    parties   Party[]
-    movements Movement[]
-    documents Document[]
-    deadlines Deadline[]
+    intakes      Intake[]
+    parties      Party[]
+    movements    Movement[]
+    documents    Document[]
+    deadlines    Deadline[]
+    appointments Appointment[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     @@index([number])
+    @@index([title])
+    @@index([serviceArea])
     @@index([status])
+    @@index([clientId])
     @@index([responsibleLawyerId])
     @@index([createdById])
     @@index([updatedAt])
@@ -141,18 +316,26 @@ model Document {
     path         String
     mimeType     String
     size         Int
+    category     DocumentCategory @default(OTHER)
 
     caseId String
     case   Case   @relation(fields: [caseId], references: [id], onDelete: Cascade)
 
     uploadedById String
-    uploadedBy   User   @relation(fields: [uploadedById], references: [id])
+    uploadedBy   User   @relation("DocumentUploader", fields: [uploadedById], references: [id])
+
+    deletedAt DateTime?
+    deletedById String?
+    deletedBy   User?   @relation("DocumentDeleter", fields: [deletedById], references: [id])
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     @@index([caseId])
     @@index([uploadedById])
+    @@index([deletedById])
+    @@index([category])
+    @@index([deletedAt])
 }
 
 model Deadline {
@@ -176,4 +359,31 @@ model Deadline {
     @@index([assignedToId])
     @@index([status])
     @@index([dueAt])
+}
+
+model Appointment {
+    id          String            @id @default(uuid())
+    title       String
+    type        AppointmentType   @default(OTHER)
+    status      AppointmentStatus @default(SCHEDULED)
+    description String?           @db.Text
+
+    startsAt DateTime
+    endsAt   DateTime?
+    location String?
+
+    caseId String
+    case   Case   @relation(fields: [caseId], references: [id], onDelete: Cascade)
+
+    responsibleId String
+    responsible   User   @relation(fields: [responsibleId], references: [id])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([caseId])
+    @@index([responsibleId])
+    @@index([type])
+    @@index([status])
+    @@index([startsAt])
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { FileText, LogOut, Plus, X } from "lucide-react";
+import { LogOut, UserCog, Users, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { logout } from "@/app/dashboard/actions/logout";
@@ -12,15 +12,17 @@ interface NavItem {
   label: string;
   icon: React.ComponentType<{ className?: string }>;
   exact?: boolean;
+  adminOnly?: boolean;
 }
 
 const mainNav: NavItem[] = [
-  { href: "/dashboard/cases", label: "Processos", icon: FileText, exact: true },
+  { href: "/dashboard/clients", label: "Clientes", icon: Users, exact: true },
   {
-    href: "/dashboard/cases/new",
-    label: "Novo processo",
-    icon: Plus,
+    href: "/dashboard/users",
+    label: "Usuários",
+    icon: UserCog,
     exact: true,
+    adminOnly: true,
   },
 ];
 
@@ -63,7 +65,7 @@ const Sidebar = ({
       {/* Logo */}
       <div className="flex h-20 items-center justify-between border-b border-white/10 px-6">
         <Link
-          href="/dashboard/cases"
+          href="/dashboard/clients"
           className="rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-ink"
         >
           <Logo variant="dark" size="sm" />
@@ -85,28 +87,30 @@ const Sidebar = ({
           Escritório
         </p>
 
-        {mainNav.map((item) => {
-          const active = isActive(item);
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              aria-current={active ? "page" : undefined}
-              className={cn(
-                "flex items-center gap-3 rounded-xl px-3 py-3 text-sm transition",
-                active
-                  ? "bg-white/10 font-semibold text-white"
-                  : "font-medium text-white/65 hover:bg-white/5 hover:text-white",
-              )}
-              onClick={onClose}
-            >
-              <item.icon
-                className={cn("h-5 w-5", active ? "text-docket" : "")}
-              />
-              {item.label}
-            </Link>
-          );
-        })}
+        {mainNav
+          .filter((item) => !item.adminOnly || isAdmin)
+          .map((item) => {
+            const active = isActive(item);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "flex items-center gap-3 rounded-xl px-3 py-3 text-sm transition",
+                  active
+                    ? "bg-white/10 font-semibold text-white"
+                    : "font-medium text-white/65 hover:bg-white/5 hover:text-white",
+                )}
+                onClick={onClose}
+              >
+                <item.icon
+                  className={cn("h-5 w-5", active ? "text-docket" : "")}
+                />
+                {item.label}
+              </Link>
+            );
+          })}
       </nav>
 
       {/* User profile */}

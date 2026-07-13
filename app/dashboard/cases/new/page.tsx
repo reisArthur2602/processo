@@ -1,6 +1,8 @@
-import type { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
+import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import prisma from "@/lib/prisma";
 import { CaseForm } from "./feature/case-form";
 
 export const metadata: Metadata = {
@@ -8,17 +10,36 @@ export const metadata: Metadata = {
   description: "Cadastre um novo processo jurídico no sistema.",
 };
 
-const NewCasePage = async () => {
+interface Props {
+  searchParams: Promise<{ client_id?: string }>;
+}
+
+const NewCasePage = async ({ searchParams }: Props) => {
+  const { client_id } = await searchParams;
+
+  if (!client_id) {
+    redirect("/dashboard/clients");
+  }
+
+  const client = await prisma.client.findUnique({
+    where: { id: client_id },
+    select: { id: true, name: true },
+  });
+
+  if (!client) {
+    redirect("/dashboard/clients");
+  }
+
   return (
     <section className="mx-auto max-w-5xl">
       {/* Back link */}
       <div className="mb-8 flex items-center justify-between">
         <Link
-          href="/dashboard/cases"
+          href={`/dashboard/clients/${client.id}`}
           className="inline-flex items-center gap-2 rounded-lg text-sm font-semibold text-slate hover:text-ink focus:outline-none focus:ring-2 focus:ring-navy focus:ring-offset-2"
         >
           <ArrowLeft className="h-4 w-4" />
-          Voltar para processos
+          Voltar para {client.name}
         </Link>
         <span className="hidden rounded-full bg-navy-soft px-3 py-1.5 text-xs font-bold text-navy sm:inline">
           Novo cadastro
@@ -35,12 +56,13 @@ const NewCasePage = async () => {
           Novo processo
         </h1>
         <p className="mt-3 max-w-2xl text-sm leading-6 text-slate">
-          Registre os dados essenciais para iniciar o acompanhamento do caso.
+          Registre os dados essenciais para iniciar o acompanhamento do caso de{" "}
+          <strong className="font-semibold text-ink">{client.name}</strong>.
         </p>
       </div>
 
       {/* Form */}
-      <CaseForm />
+      <CaseForm clientId={client.id} clientName={client.name} />
     </section>
   );
 };

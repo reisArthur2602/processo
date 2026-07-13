@@ -21,10 +21,7 @@ import {
 import { deleteCase } from "../actions/delete-case";
 import { updateCaseStatus } from "../actions/update-case-status";
 import { CreateDeadlineDialog } from "./create-deadline-dialog";
-import {
-  EditCaseDialog,
-  type EditCaseInitialData,
-} from "./edit-case-dialog";
+import { EditCaseDialog, type EditCaseInitialData } from "./edit-case-dialog";
 
 interface CaseOptionsMenuProps {
   caseId: string;

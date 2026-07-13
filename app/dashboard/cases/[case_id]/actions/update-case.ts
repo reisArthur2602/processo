@@ -15,8 +15,14 @@ export const updateCase = async (caseId: string, input: UpdateCaseInput) => {
     const parsed = updateCaseSchema.safeParse(input);
     if (!parsed.success) return { ok: false, message: "Dados inválidos." };
 
-    const { actionType, court, division, plaintiffName, defendantName, claimValue } =
-      parsed.data;
+    const {
+      actionType,
+      court,
+      division,
+      plaintiffName,
+      defendantName,
+      claimValue,
+    } = parsed.data;
 
     const claimValueNum = claimValue
       ? Number(claimValue.replace(",", "."))

@@ -16,6 +16,7 @@ import {
   type CreateCaseInput,
   createCaseSchema,
 } from "@/schema/create-case-schema";
+import { SERVICE_AREAS } from "@/schema/create-intake-schema";
 import { createCase } from "../actions/create-case";
 
 const ACTION_TYPES = [
@@ -26,6 +27,8 @@ const ACTION_TYPES = [
   "Ação revisional",
   "Outro",
 ];
+
+type CaseFormFields = Omit<CreateCaseInput, "clientId">;
 
 const formatCNJ = (value: string) => {
   const digits = value.replace(/\D/g, "").slice(0, 20);
@@ -39,7 +42,12 @@ const formatCNJ = (value: string) => {
   return parts.join("");
 };
 
-const CaseForm = () => {
+interface CaseFormProps {
+  clientId: string;
+  clientName: string;
+}
+
+const CaseForm = ({ clientId, clientName }: CaseFormProps) => {
   const router = useRouter();
   const [digitCount, setDigitCount] = useState(0);
 
@@ -48,10 +56,11 @@ const CaseForm = () => {
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<CreateCaseInput>({
-    resolver: zodResolver(createCaseSchema),
+  } = useForm<CaseFormFields>({
+    resolver: zodResolver(createCaseSchema.omit({ clientId: true })),
     defaultValues: {
       number: "",
+      serviceArea: "",
       actionType: "",
       court: "",
       plaintiffName: "",
@@ -59,14 +68,16 @@ const CaseForm = () => {
     },
   });
 
-  const onSubmit = async (data: CreateCaseInput) => {
-    const result = await createCase(data);
+  const onSubmit = async (data: CaseFormFields) => {
+    const result = await createCase({ ...data, clientId });
     if (!result.ok) {
       toast.error(result.message);
       return;
     }
     toast.success(result.message);
-    router.push("/dashboard/cases");
+    router.push(
+      result.data ? `/dashboard/cases/${result.data.id}` : "/dashboard/cases",
+    );
   };
 
   return (
@@ -94,6 +105,14 @@ const CaseForm = () => {
             </p>
           </div>
         </div>
+      </div>
+
+      {/* Linked client */}
+      <div className="flex items-center gap-3 border-b border-line bg-navy-soft/30 px-5 py-4 sm:px-8">
+        <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-navy">
+          Cliente
+        </span>
+        <span className="font-semibold text-ink">{clientName}</span>
       </div>
 
       {/* Form body */}
@@ -161,6 +180,30 @@ const CaseForm = () => {
                 </p>
               </div>
             </div>
+
+            {/* Service area */}
+            <Field>
+              <FieldLabel htmlFor="serviceArea">
+                Área de atuação{" "}
+                <span className="text-danger" aria-hidden="true">
+                  *
+                </span>
+              </FieldLabel>
+              <Select
+                id="serviceArea"
+                status={errors.serviceArea ? "error" : "default"}
+                aria-invalid={!!errors.serviceArea}
+                {...register("serviceArea")}
+              >
+                <option value="">Selecione a área de atuação</option>
+                {SERVICE_AREAS.map((area) => (
+                  <option key={area} value={area}>
+                    {area}
+                  </option>
+                ))}
+              </Select>
+              <FieldError>{errors.serviceArea?.message}</FieldError>
+            </Field>
 
             {/* Action type */}
             <Field>
@@ -260,7 +303,7 @@ const CaseForm = () => {
       {/* Form footer */}
       <div className="flex flex-col-reverse justify-end gap-3 border-t border-line bg-mist px-5 py-5 sm:flex-row sm:px-8">
         <Link
-          href="/dashboard/cases"
+          href={`/dashboard/clients/${clientId}`}
           className={buttonVariants({ variant: "outline" })}
         >
           Cancelar

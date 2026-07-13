@@ -3,9 +3,11 @@ import { z } from "zod";
 const CNJ_REGEX = /^\d{7}-\d{2}\.\d{4}\.\d\.\d{2}\.\d{4}$/;
 
 export const createCaseSchema = z.object({
+  clientId: z.string().min(1, "Cliente não identificado."),
   number: z
     .string()
     .regex(CNJ_REGEX, "Informe o número completo no padrão CNJ."),
+  serviceArea: z.string().min(1, "Selecione a área de atuação."),
   actionType: z.string().min(1, "Selecione o tipo de ação."),
   court: z.string().min(3, "Informe o tribunal ou a vara."),
   plaintiffName: z.string().min(2, "Informe o autor do processo."),

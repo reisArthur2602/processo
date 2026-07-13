@@ -33,7 +33,13 @@ export const metadata: Metadata = {
     "Plataforma jurídica para gestão de processos, movimentações, documentos e partes.",
   applicationName: "Processo",
   authors: [{ name: "Processo" }],
-  keywords: ["jurídico", "processo", "advocacia", "gestão jurídica", "escritório de advocacia"],
+  keywords: [
+    "jurídico",
+    "processo",
+    "advocacia",
+    "gestão jurídica",
+    "escritório de advocacia",
+  ],
   robots: {
     index: false,
     follow: false,

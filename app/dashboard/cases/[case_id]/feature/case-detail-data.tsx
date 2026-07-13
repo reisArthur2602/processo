@@ -2,6 +2,7 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache } from "react";
+import { getSession } from "@/lib/auth/get-session";
 import prisma from "@/lib/prisma";
 import {
   CaseInteractive,
@@ -14,6 +15,7 @@ const getCaseDetail = cache(async (caseId: string) => {
   return prisma.case.findUnique({
     where: { id: caseId },
     include: {
+      client: { select: { id: true, name: true } },
       parties: true,
       movements: {
         orderBy: { occurredAt: "desc" },
@@ -23,14 +25,16 @@ const getCaseDetail = cache(async (caseId: string) => {
       deadlines: {
         where: { status: "PENDING" },
         orderBy: { dueAt: "asc" },
-        take: 1,
       },
     },
   });
 });
 
 const CaseDetailData = async ({ caseId }: { caseId: string }) => {
-  const caseData = await getCaseDetail(caseId);
+  const [caseData, session] = await Promise.all([
+    getCaseDetail(caseId),
+    getSession(),
+  ]);
 
   if (!caseData) notFound();
 
@@ -65,10 +69,14 @@ const CaseDetailData = async ({ caseId }: { caseId: string }) => {
       })
     : null;
 
+  const caseNumber = caseData.number ?? "—";
+  const actionType = caseData.actionType ?? "—";
+  const court = caseData.court ?? "—";
+
   const copyText = [
-    `Processo ${caseData.number}`,
+    `Processo ${caseNumber}`,
     plaintiff && defendant ? `${plaintiff.name} x ${defendant.name}` : null,
-    caseData.actionType,
+    actionType,
     claimValue,
   ]
     .filter(Boolean)
@@ -79,21 +87,23 @@ const CaseDetailData = async ({ caseId }: { caseId: string }) => {
       {/* Page top bar */}
       <div className="mb-8 flex items-center justify-between gap-4">
         <Link
-          href="/dashboard/cases"
+          href={`/dashboard/clients/${caseData.client.id}`}
           className="inline-flex items-center gap-2 rounded-lg text-sm font-semibold text-slate transition hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2"
         >
           <ArrowLeft className="h-4 w-4" />
-          Voltar para processos
+          Voltar para {caseData.client.name}
         </Link>
         <CaseOptionsMenu
           caseId={caseData.id}
           status={caseData.status as "ACTIVE" | "SUSPENDED" | "ARCHIVED"}
-          caseNumber={caseData.number}
+          caseNumber={caseNumber}
           initialData={{
-            actionType: caseData.actionType,
-            court: caseData.court,
+            actionType,
+            court,
             division: caseData.division,
-            claimValue: caseData.claimValue ? Number(caseData.claimValue) : null,
+            claimValue: caseData.claimValue
+              ? Number(caseData.claimValue)
+              : null,
             plaintiffName: plaintiff?.name ?? null,
             defendantName: defendant?.name ?? null,
           }}
@@ -103,8 +113,8 @@ const CaseDetailData = async ({ caseId }: { caseId: string }) => {
       <CaseInteractive
         caseId={caseData.id}
         caseStatus={caseData.status as "ACTIVE" | "SUSPENDED" | "ARCHIVED"}
-        caseNumber={caseData.number}
-        actionType={caseData.actionType}
+        caseNumber={caseNumber}
+        actionType={actionType}
         plaintiffParty={
           plaintiff
             ? { name: plaintiff.name, document: plaintiff.document }
@@ -115,7 +125,7 @@ const CaseDetailData = async ({ caseId }: { caseId: string }) => {
             ? { name: defendant.name, document: defendant.document }
             : null
         }
-        court={caseData.court}
+        court={court}
         division={caseData.division}
         claimValue={claimValue}
         nextDeadline={
@@ -130,6 +140,26 @@ const CaseDetailData = async ({ caseId }: { caseId: string }) => {
         initialMovements={movements}
         documents={documents}
         copyText={copyText}
+        reportData={{
+          number: caseNumber,
+          actionType,
+          status: caseData.status as "ACTIVE" | "SUSPENDED" | "ARCHIVED",
+          court,
+          division: caseData.division,
+          claimValue,
+          plaintiffName: plaintiff?.name ?? null,
+          plaintiffDocument: plaintiff?.document ?? null,
+          defendantName: defendant?.name ?? null,
+          defendantDocument: defendant?.document ?? null,
+          movements: [...movements].reverse(),
+          deadlines: caseData.deadlines.map((d) => ({
+            id: d.id,
+            title: d.title,
+            description: d.description,
+            dueAt: d.dueAt.toISOString(),
+          })),
+          generatedByName: session?.name ?? "—",
+        }}
       />
     </div>
   );
