@@ -46,8 +46,10 @@ import { addMovement } from "../actions/add-movement";
 import { deleteDocument } from "../actions/delete-document";
 import { deleteMovement } from "../actions/delete-movement";
 import { updateMovement } from "../actions/update-movement";
-import type { CaseReportData } from "./case-report-template";
-import { GenerateCaseReportButton } from "./generate-case-report-button";
+import {
+  type CaseReportData,
+  GenerateCaseReportButton,
+} from "./generate-case-report-button";
 import { UploadDocumentDialog } from "./upload-document-dialog";
 
 export type MovementRow = {

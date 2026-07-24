@@ -14,20 +14,13 @@ const AppleIcon = () =>
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        color: "#b58b4a",
+        fontSize: 118,
+        fontWeight: 700,
+        fontFamily: "Georgia, 'Times New Roman', serif",
       }}
     >
-      <svg
-        width="100"
-        height="100"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="#ffffff"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M12 2v6m0 0l-4 2.5m4-2.5l4 2.5M8 8l-3.5 8.5h11l-3.5-8.5m-4 8.5h4m-6 0h8v2h-8z" />
-      </svg>
+      M
     </div>,
     { ...size },
   );

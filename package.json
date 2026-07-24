@@ -27,7 +27,6 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dotenv": "^17.4.2",
-    "html2canvas-pro": "^2.2.3",
     "jose": "^6.2.3",
     "jspdf": "^4.2.1",
     "lucide-react": "^1.22.0",

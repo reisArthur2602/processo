@@ -2,7 +2,6 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache } from "react";
-import { getSession } from "@/lib/auth/get-session";
 import prisma from "@/lib/prisma";
 import {
   CaseInteractive,
@@ -31,10 +30,7 @@ const getCaseDetail = cache(async (caseId: string) => {
 });
 
 const CaseDetailData = async ({ caseId }: { caseId: string }) => {
-  const [caseData, session] = await Promise.all([
-    getCaseDetail(caseId),
-    getSession(),
-  ]);
+  const caseData = await getCaseDetail(caseId);
 
   if (!caseData) notFound();
 
@@ -158,7 +154,6 @@ const CaseDetailData = async ({ caseId }: { caseId: string }) => {
             description: d.description,
             dueAt: d.dueAt.toISOString(),
           })),
-          generatedByName: session?.name ?? "—",
         }}
       />
     </div>
