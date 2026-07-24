@@ -182,8 +182,8 @@ model Intake {
 
     serviceArea String
 
-    clientReport String? @db.VarChar(1800)
-    preliminaryAnalysis String? @db.VarChar(1800)
+    clientReport String? @db.Text
+    preliminaryAnalysis String? @db.Text
 
     providences ProvidenceType[] @default([])
     otherProvidence String? @db.Text

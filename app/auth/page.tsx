@@ -25,14 +25,14 @@ const AuthPage = () => (
       <div className="relative z-10 max-w-xl">
         <p className="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.22em] text-white/60">
           <span className="h-px w-10 bg-docket" />
-          Gestão jurídica
+          Gestão processual
         </p>
         <h1 className="mt-6 font-display text-5xl font-bold leading-[1.05] tracking-[-0.035em] xl:text-6xl">
-          Seu escritório com os processos em ordem.
+          Processos, clientes e atendimentos. Tudo controlado.
         </h1>
         <p className="mt-6 max-w-lg text-lg leading-8 text-white/70">
-          Acompanhe andamentos, documentos e partes com uma visão única,
-          construída para decisões rápidas e responsáveis.
+          Gerencie processos, movimentações, documentos e fichas de atendimento
+          com uma plataforma construída para responsabilidade e eficiência.
         </p>
 
         <div className="mt-10 flex gap-5">
@@ -44,17 +44,17 @@ const AuthPage = () => (
           <div className="space-y-6 text-sm text-white/70">
             <p>
               <strong className="block text-white">
-                Centralize o histórico
+                Processe com ordem
               </strong>
-              Movimentações e documentos na mesma linha do tempo.
+              Procurações, movimentações e prazos organizados em um único lugar.
             </p>
             <p>
-              <strong className="block text-white">Proteja o foco</strong>
-              Informação essencial sem excesso visual.
+              <strong className="block text-white">Atenda com precisão</strong>
+              Registre e compartilhe fichas de atendimento com clientes.
             </p>
             <p>
-              <strong className="block text-white">Aja com contexto</strong>
-              Dados das partes sempre ao alcance.
+              <strong className="block text-white">Gerencie clientes</strong>
+              Histórico completo de interações e documentos por cliente.
             </p>
           </div>
         </div>

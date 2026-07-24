@@ -38,11 +38,8 @@ const decimalString = z
   );
 
 export const updateIntakeSchema = z.object({
-  clientReport: z.string().max(1800, "Máximo de 1800 caracteres.").optional(),
-  preliminaryAnalysis: z
-    .string()
-    .max(1800, "Máximo de 1800 caracteres.")
-    .optional(),
+  clientReport: z.string().optional(),
+  preliminaryAnalysis: z.string().optional(),
   providences: z.array(z.enum(PROVIDENCE_TYPES)),
   otherProvidence: z.string().optional(),
   feeAmount: decimalString,

@@ -98,7 +98,6 @@ const IntakeForm = ({ clientId, intakeId, initialData }: IntakeFormProps) => {
               <Textarea
                 id="clientReport"
                 rows={4}
-                maxLength={1800}
                 placeholder="Descreva o que o cliente relatou no atendimento"
                 status={errors.clientReport ? "error" : "default"}
                 {...register("clientReport")}
@@ -116,7 +115,6 @@ const IntakeForm = ({ clientId, intakeId, initialData }: IntakeFormProps) => {
               <Textarea
                 id="preliminaryAnalysis"
                 rows={4}
-                maxLength={1800}
                 placeholder="Registre a análise jurídica preliminar do caso"
                 status={errors.preliminaryAnalysis ? "error" : "default"}
                 {...register("preliminaryAnalysis")}

@@ -26,7 +26,7 @@ const AppleIcon = () =>
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <path d="M6 4h12M8 4v16m8-16v16M5 20h14M10 8h4M10 12h4M10 16h4" />
+        <path d="M12 2v6m0 0l-4 2.5m4-2.5l4 2.5M8 8l-3.5 8.5h11l-3.5-8.5m-4 8.5h4m-6 0h8v2h-8z" />
       </svg>
     </div>,
     { ...size },

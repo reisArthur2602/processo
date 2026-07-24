@@ -26,12 +26,12 @@ const baseUrl = process.env.NEXT_PUBLIC_URL ?? "http://localhost:3000";
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "Processo — Sistema Jurídico",
-    template: "%s — Processo",
+    default: "Monteiro — Sociedade de Advogados",
+    template: "%s — Monteiro",
   },
   description:
-    "Plataforma jurídica para gestão de processos, movimentações, documentos e partes.",
-  applicationName: "Processo",
+    "Plataforma para gestão de processos, movimentações, documentos, atendimentos e clientes.",
+  applicationName: "Monteiro",
   authors: [{ name: "Processo" }],
   keywords: [
     "jurídico",
@@ -39,6 +39,8 @@ export const metadata: Metadata = {
     "advocacia",
     "gestão jurídica",
     "escritório de advocacia",
+    "Monteiro",
+    "sociedade de advogados",
   ],
   robots: {
     index: false,
@@ -47,18 +49,18 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    siteName: "Processo",
-    title: "Processo — Sistema Jurídico",
+    siteName: "Monteiro",
+    title: "Monteiro — Sociedade de Advogados",
     description:
-      "Plataforma jurídica para gestão de processos, movimentações e documentos.",
+      "Plataforma para gestão de processos, movimentações, documentos e atendimentos.",
     locale: "pt_BR",
     url: baseUrl,
   },
   twitter: {
     card: "summary",
-    title: "Processo — Sistema Jurídico",
+    title: "Monteiro — Sociedade de Advogados",
     description:
-      "Plataforma jurídica para gestão de processos, movimentações e documentos.",
+      "Plataforma para gestão de processos, movimentações, documentos e atendimentos.",
   },
 };
 

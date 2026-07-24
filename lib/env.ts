@@ -17,6 +17,15 @@ const schema = z.object({
     .transform((v) => v === "true")
     .default(false),
   FTP_BASE_PATH: z.string().default("/processo"),
+  SMTP_HOST: z.string().min(1, "SMTP_HOST é obrigatório"),
+  SMTP_PORT: z.coerce.number().default(587),
+  SMTP_USER: z.string().min(1, "SMTP_USER é obrigatório"),
+  SMTP_PASSWORD: z.string().min(1, "SMTP_PASSWORD é obrigatório"),
+  SMTP_FROM: z.string().min(1, "SMTP_FROM é obrigatório"),
+  SMTP_SECURE: z
+    .string()
+    .transform((v) => v === "true")
+    .default(false),
 });
 
 const parsed = schema.safeParse(process.env);
